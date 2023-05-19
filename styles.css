@@ -3549,6 +3549,8 @@ html {
   
   .div-block-17 {
     display: flex;
+    color: #000;
+    text-decoration: none;
   }
   
   .image-13 {
@@ -3562,6 +3564,7 @@ html {
   .heading-5 {
     align-self: center;
     font-weight: 600;
+    text-decoration: none;
   }
   
   .text-block-30 {
@@ -3621,6 +3624,14 @@ html {
     align-items: center;
     margin-top: 70px;
     display: flex;
+  }
+
+
+  /* below from 3629 - 3632 is the css styler for google map attachment */
+
+  .googlemapper {
+    margin-top: 50px;
+    margin-bottom: 10px;
   }
   
   .column-5 {
