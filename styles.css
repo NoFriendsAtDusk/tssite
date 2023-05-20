@@ -3629,10 +3629,28 @@ html {
 
   /* below from 3629 - 3632 is the css styler for google map attachment */
 
-  .googlemapper {
-    margin-top: 50px;
-    margin-bottom: 10px;
+  .google-maps {
+    position: relative;
+    padding-top: 10%; 
+    
   }
+
+  /*.google-maps iframe {
+
+    position: absolute;
+
+    top: 0;
+
+    left: 0;
+
+    width: 100% !important;
+
+    height: 100% !important;
+
+  }
+  */
+
+
   
   .column-5 {
     justify-content: flex-end;
