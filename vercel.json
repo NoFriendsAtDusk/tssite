@@ -9,8 +9,14 @@
       "destination": "/static/:path*"
     },
     {
-      "source": "/login",
-      "destination": "/app/login"
+      "source": "/app/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "(?<host>.*)"
+        }
+      ],
+      "destination": "/app/:path*"
     }
   ],
   "buildCommand": "next build",

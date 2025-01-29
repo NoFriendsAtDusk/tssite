@@ -11,7 +11,14 @@ export function middleware(request: NextRequest) {
     !path.startsWith('/app/unauthorized')
   
   // Auth route - /app/login
-  const isAuthRoute = path.startsWith('/app/login')
+  const isAuthRoute = path === '/app/login' || path === '/app/login/'
+
+  // If accessing root app path, redirect to login if not authenticated
+  if (path === '/app' || path === '/app/') {
+    if (!session) {
+      return NextResponse.redirect(new URL('/app/login', request.url))
+    }
+  }
 
   // Redirect to unauthorized page if accessing protected route without session
   if (isProtectedRoute && !session) {

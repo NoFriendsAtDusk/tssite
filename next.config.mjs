@@ -20,19 +20,20 @@ const nextConfig = {
       afterFiles: [
         // Handle app routes
         {
-          source: '/login',
+          source: '/app/login',
           destination: '/app/login',
         },
-      ],
-      fallback: [
-        // Handle all other routes
         {
-          source: '/:path*',
-          destination: '/:path*',
+          source: '/app/:path*',
+          destination: '/app/:path*',
         },
       ],
     }
-  }
+  },
+  // Add basePath configuration
+  basePath: '',
+  // Configure trailing slash
+  trailingSlash: true
 };
 
 export default nextConfig;
