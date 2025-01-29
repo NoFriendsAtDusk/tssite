@@ -25,7 +25,9 @@ function LoginForm() {
       if (result?.error) {
         setError("認証に失敗しました")
       } else {
-        window.location.href = callbackUrl
+        // Ensure we redirect to the app path
+        const redirectUrl = callbackUrl.startsWith('/app') ? callbackUrl : '/app'
+        window.location.href = window.location.origin + redirectUrl
       }
     } catch {
       setError("ログインに失敗しました。もう一度お試しください。")
