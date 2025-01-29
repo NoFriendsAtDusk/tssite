@@ -10,15 +10,25 @@ export default function Login() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
-    // Simple admin validation - in a real app, this should be done server-side
-    if (username === "admin" && password === "admin123") {
-      // Set secure session cookie
-      document.cookie = `session=${btoa(username)}; path=/; secure; samesite=strict`
-      
-      // Redirect to the app page
-      window.location.href = window.location.origin + "/app"
-    } else {
-      setError("認証に失敗しました")
+    try {
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      })
+
+      const data = await response.json()
+
+      if (data.success) {
+        // Redirect to the app page
+        window.location.href = window.location.origin + "/app"
+      } else {
+        setError(data.error || "認証に失敗しました")
+      }
+    } catch (err: unknown) {
+      setError("ログインに失敗しました。もう一度お試しください。")
     }
   }
 

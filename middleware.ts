@@ -14,9 +14,9 @@ export function middleware(request: NextRequest) {
   // Auth route - /app/login
   const isAuthRoute = path.startsWith('/app/login')
 
-  // Redirect to login if accessing protected route without session
+  // Redirect to unauthorized page if accessing protected route without session
   if (isProtectedRoute && !session) {
-    return NextResponse.redirect(new URL('/app/login', request.url))
+    return NextResponse.redirect(new URL('/app/unauthorized', request.url))
   }
 
   // Redirect to app if accessing login with valid session
