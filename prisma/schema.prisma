@@ -1,0 +1,49 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Entry {
+  id                Int                @id @default(autoincrement())
+  text              String
+  tags              String             // Stored as JSON string
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  calendarTaskEntry CalendarTaskEntry[]
+}
+
+model ProcessedCalendarEvent {
+  id              Int       @id @default(autoincrement())
+  eventId         String    @unique    // Google Calendar Event ID
+  eventTitle      String
+  eventStart      DateTime
+  taskEventId     String?   // ID of the created task event
+  createdAt       DateTime  @default(now())
+  calendarTask    CalendarTask?
+}
+
+model CalendarTask {
+  id                    Int                  @id @default(autoincrement())
+  processedEvent        ProcessedCalendarEvent @relation(fields: [processedEventId], references: [id])
+  processedEventId      Int                  @unique
+  taskContent          String
+  createdAt            DateTime             @default(now())
+  entries              CalendarTaskEntry[]
+}
+
+model CalendarTaskEntry {
+  id             Int          @id @default(autoincrement())
+  calendarTask   CalendarTask @relation(fields: [calendarTaskId], references: [id])
+  calendarTaskId Int
+  entry          Entry        @relation(fields: [entryId], references: [id])
+  entryId        Int
+
+  @@unique([calendarTaskId, entryId])
+}
