@@ -15,8 +15,8 @@ export default function Login() {
       // Set secure session cookie
       document.cookie = `session=${btoa(username)}; path=/; secure; samesite=strict`
       
-      // Redirect to the home page
-      window.location.href = window.location.origin + "/"
+      // Redirect to the app page
+      window.location.href = window.location.origin + "/app"
     } else {
       setError("認証に失敗しました")
     }
