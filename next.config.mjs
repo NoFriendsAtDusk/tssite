@@ -2,6 +2,8 @@
 const nextConfig = {
   output: 'export',
   basePath: '/app',
+  assetPrefix: '/app/',
+  trailingSlash: true,
   logging: {
     level: 'info'
   }
