@@ -7,12 +7,16 @@ export default function Login() {
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    
     // Simple admin validation - in a real app, this should be done server-side
     if (username === "admin" && password === "admin123") {
-      // Redirect to the app page
-      window.location.href = window.location.origin + "/app"
+      // Set secure session cookie
+      document.cookie = `session=${btoa(username)}; path=/; secure; samesite=strict`
+      
+      // Redirect to the home page
+      window.location.href = window.location.origin + "/"
     } else {
       setError("認証に失敗しました")
     }
