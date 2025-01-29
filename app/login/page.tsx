@@ -11,8 +11,8 @@ export default function Login() {
     e.preventDefault()
     // Simple admin validation - in a real app, this should be done server-side
     if (username === "admin" && password === "admin123") {
-      // Redirect to the root of the Next.js app
-      window.location.href = "/"
+      // Redirect to the root of the site
+      window.location.href = window.location.origin
     } else {
       setError("認証に失敗しました")
     }
