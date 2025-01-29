@@ -1,19 +1,25 @@
-import { getToken } from 'next-auth/jwt'
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
-export async function middleware(request: NextRequest) {
-  const token = await getToken({ req: request })
+export function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname
+  const session = request.cookies.get('session')?.value
+
+  // Protected routes - all routes under /app except /app/login and /app/unauthorized
+  const isProtectedRoute = path.startsWith('/app') && 
+    !path.startsWith('/app/login') && 
+    !path.startsWith('/app/unauthorized')
   
-  const isProtectedRoute = path.startsWith('/app') && !path.startsWith('/app/login')
+  // Auth route - /app/login
   const isAuthRoute = path.startsWith('/app/login')
 
-  if (isProtectedRoute && !token) {
+  // Redirect to unauthorized page if accessing protected route without session
+  if (isProtectedRoute && !session) {
     return NextResponse.redirect(new URL('/app/unauthorized', request.url))
   }
 
-  if (isAuthRoute && token) {
+  // Redirect to app if accessing login with valid session
+  if (isAuthRoute && session) {
     return NextResponse.redirect(new URL('/app', request.url))
   }
 

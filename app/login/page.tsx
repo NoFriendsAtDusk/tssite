@@ -1,30 +1,22 @@
 "use client"
 
 import { useState } from "react"
-import { signIn } from "next-auth/react"
-import { useSearchParams } from "next/navigation"
+import { validateCredentials, setAuthCookie } from "@/lib/auth"
 
 export default function Login() {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
-  const searchParams = useSearchParams()
-  const callbackUrl = searchParams.get("callbackUrl") || "/app"
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
     try {
-      const result = await signIn("credentials", {
-        username,
-        password,
-        redirect: false,
-      })
-
-      if (result?.error) {
-        setError("認証に失敗しました")
+      if (validateCredentials(username, password)) {
+        setAuthCookie(username)
+        window.location.href = window.location.origin + "/app"
       } else {
-        window.location.href = callbackUrl
+        setError("認証に失敗しました")
       }
     } catch {
       setError("ログインに失敗しました。もう一度お試しください。")
