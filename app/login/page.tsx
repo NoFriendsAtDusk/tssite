@@ -27,7 +27,7 @@ export default function Login() {
       } else {
         setError(data.error || "認証に失敗しました")
       }
-    } catch (err: unknown) {
+    } catch {
       setError("ログインに失敗しました。もう一度お試しください。")
     }
   }
