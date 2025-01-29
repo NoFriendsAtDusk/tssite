@@ -31,8 +31,9 @@ jobs:
 
       - name: Prepare deployment
         run: |
-          # Create a directory for all content
+          # Create directories
           mkdir -p ./deploy
+          mkdir -p ./deploy/app
           # Copy static site files
           cp -r docs/* ./deploy/
           # Copy Next.js output to app subdirectory
