@@ -1,21 +1,20 @@
 "use client"
 
 import { useState } from "react"
-import { useRouter } from "next/navigation"
 
 export default function Login() {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
-  const router = useRouter()
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     // Simple admin validation - in a real app, this should be done server-side
     if (username === "admin" && password === "admin123") {
-      router.push("/")
+      // Redirect to the root of the Next.js app
+      window.location.href = "/"
     } else {
-      setError("Invalid credentials")
+      setError("認証に失敗しました")
     }
   }
 
