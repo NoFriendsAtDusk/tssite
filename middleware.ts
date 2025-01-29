@@ -5,19 +5,24 @@ export function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname
   const session = request.cookies.get('session')?.value
 
-  // Protected routes - all routes under /app except /app/login and /app/unauthorized
+  // Protected routes - all routes under /app except /app/login
   const isProtectedRoute = path.startsWith('/app') && 
-    !path.startsWith('/app/login') && 
-    !path.startsWith('/app/unauthorized')
+    !path.startsWith('/app/login')
   
   // Auth route - /app/login
   const isAuthRoute = path === '/app/login' || path === '/app/login/'
 
-  // If accessing root app path, redirect to login if not authenticated
+  // Handle root app path
   if (path === '/app' || path === '/app/') {
     if (!session) {
       return NextResponse.redirect(new URL('/app/login', request.url))
     }
+    return NextResponse.next()
+  }
+
+  // Handle static files
+  if (path === '/' || path.startsWith('/static/')) {
+    return NextResponse.next()
   }
 
   // Redirect to unauthorized page if accessing protected route without session

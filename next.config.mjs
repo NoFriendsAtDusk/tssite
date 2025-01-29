@@ -4,10 +4,14 @@ const nextConfig = {
     level: 'info'
   },
   // Rewrite rules to handle both static site and app
+  // Configure app directory
+  experimental: {
+    appDir: true
+  },
+  // Rewrite rules for static site
   async rewrites() {
     return {
       beforeFiles: [
-        // Serve static site files from /static
         {
           source: '/',
           destination: '/static/index.html',
@@ -16,24 +20,9 @@ const nextConfig = {
           source: '/static/:path*',
           destination: '/static/:path*',
         },
-      ],
-      afterFiles: [
-        // Handle app routes
-        {
-          source: '/app/login',
-          destination: '/app/login',
-        },
-        {
-          source: '/app/:path*',
-          destination: '/app/:path*',
-        },
-      ],
+      ]
     }
-  },
-  // Add basePath configuration
-  basePath: '',
-  // Configure trailing slash
-  trailingSlash: true
+  }
 };
 
 export default nextConfig;
