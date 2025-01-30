@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { EntriesList } from "@/app/components/entries-list"
 import { EntryForm } from "@/app/components/entry-form"
+import { LogOut } from "lucide-react"
 
 export default function AppPage() {
   const { data: session, status } = useSession({
@@ -29,7 +30,9 @@ export default function AppPage() {
             <Button
               variant="outline"
               onClick={() => window.location.href = "/api/auth/signout"}
+              className="flex items-center gap-2"
             >
+              <LogOut className="h-4 w-4" />
               Sign Out
             </Button>
           </div>
