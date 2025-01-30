@@ -1,11 +1,12 @@
 {
-  "buildCommand": "next build",
+  "buildCommand": "npx prisma migrate deploy && next build",
   "outputDirectory": ".next",
   "framework": "nextjs",
   "regions": ["hnd1"],
   "env": {
     "NEXTAUTH_URL": "https://thomasenglish.jp",
-    "NEXTAUTH_SECRET": "${NEXTAUTH_SECRET}"
+    "NEXTAUTH_SECRET": "${NEXTAUTH_SECRET}",
+    "DATABASE_URL": "file:./prisma/prod.db"
   },
   "headers": [
     {
