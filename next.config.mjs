@@ -3,12 +3,9 @@ const nextConfig = {
   logging: {
     level: 'info'
   },
-  // Rewrite rules to handle both static site and app
-  // Configure app directory
   experimental: {
     appDir: true
   },
-  // Rewrite rules for static site
   async rewrites() {
     return {
       beforeFiles: [
@@ -19,7 +16,21 @@ const nextConfig = {
         {
           source: '/static/:path*',
           destination: '/static/:path*',
+        }
+      ],
+      afterFiles: [
+        {
+          source: '/app',
+          destination: '/app',
         },
+        {
+          source: '/app/login',
+          destination: '/app/login',
+        },
+        {
+          source: '/app/:path*',
+          destination: '/app/:path*',
+        }
       ]
     }
   }
