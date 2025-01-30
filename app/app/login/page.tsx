@@ -17,23 +17,12 @@ function LoginForm() {
     setError("")
     
     try {
-      const result = await signIn("credentials", {
+      await signIn("credentials", {
         username,
         password,
-        callbackUrl: callbackUrl,
-        redirect: false,
+        callbackUrl,
+        redirect: true,
       })
-
-      if (result?.error) {
-        setError("認証に失敗しました")
-        return
-      }
-
-      if (result?.ok) {
-        // Wait a moment for the session to be set
-        await new Promise(resolve => setTimeout(resolve, 500))
-        window.location.href = callbackUrl
-      }
     } catch (error) {
       console.error('Login error:', error)
       setError("ログインに失敗しました。もう一度お試しください。")

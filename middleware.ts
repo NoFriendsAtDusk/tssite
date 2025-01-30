@@ -1,9 +1,18 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import { getToken } from 'next-auth/jwt'
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname
-  const session = request.cookies.get('session')?.value
+  const token = await getToken({ 
+    req: request,
+    secret: process.env.NEXTAUTH_SECRET
+  })
+
+  // Handle static files
+  if (path === '/' || path.startsWith('/static/')) {
+    return NextResponse.next()
+  }
 
   // Protected routes - all routes under /app except /app/login
   const isProtectedRoute = path.startsWith('/app') && 
@@ -12,26 +21,15 @@ export function middleware(request: NextRequest) {
   // Auth route - /app/login
   const isAuthRoute = path === '/app/login' || path === '/app/login/'
 
-  // Handle root app path
-  if (path === '/app' || path === '/app/') {
-    if (!session) {
-      return NextResponse.redirect(new URL('/app/login', request.url))
-    }
-    return NextResponse.next()
+  // If the user is not logged in and trying to access a protected route
+  if (!token && isProtectedRoute) {
+    const loginUrl = new URL('/app/login', request.url)
+    loginUrl.searchParams.set('callbackUrl', request.url)
+    return NextResponse.redirect(loginUrl)
   }
 
-  // Handle static files
-  if (path === '/' || path.startsWith('/static/')) {
-    return NextResponse.next()
-  }
-
-  // Redirect to unauthorized page if accessing protected route without session
-  if (isProtectedRoute && !session) {
-    return NextResponse.redirect(new URL('/app/unauthorized', request.url))
-  }
-
-  // Redirect to app if accessing login with valid session
-  if (isAuthRoute && session) {
+  // If the user is logged in and trying to access login page
+  if (token && isAuthRoute) {
     return NextResponse.redirect(new URL('/app', request.url))
   }
 
