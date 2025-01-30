@@ -14,22 +14,28 @@ function LoginForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setError("")
     
     try {
       const result = await signIn("credentials", {
         username,
         password,
+        callbackUrl: callbackUrl,
         redirect: false,
       })
 
       if (result?.error) {
         setError("認証に失敗しました")
-      } else {
-        // Ensure we redirect to the app path
-        const redirectUrl = callbackUrl.startsWith('/app') ? callbackUrl : '/app'
-        window.location.href = window.location.origin + redirectUrl
+        return
       }
-    } catch {
+
+      if (result?.ok) {
+        // Wait a moment for the session to be set
+        await new Promise(resolve => setTimeout(resolve, 500))
+        window.location.href = callbackUrl
+      }
+    } catch (error) {
+      console.error('Login error:', error)
       setError("ログインに失敗しました。もう一度お試しください。")
     }
   }
